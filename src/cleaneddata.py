@@ -27,7 +27,7 @@ df["rating"]=df["rating"].fillna("unknown")
 df["duration"]=df["duration"].fillna("unknown")
 
 
-df["duration_minutes"] = df["duration"].str.extract(
+df["duration_minutes"] = df["duration"].str.extract(         #Extract durations for movies
     r"(\d+)\s*min"
 )[0]
 
@@ -36,10 +36,9 @@ df["duration_minutes"] = pd.to_numeric(     # Convert to numeric
     errors="coerce"
 )
 
-df["seasons"] = (       #Extract number of seasons for TV shows
-    df["duration"]
-    .str.replace(" Seasons", "", regex=False)
-    .str.replace(" Seasons", "", regex=False)
+df["seasons"] = df["duration"].str.extract(
+    r"(\d+)\s*Season",
+    expand=False
 )
 
 df["seasons"] = pd.to_numeric(      #convert to numeric
@@ -48,7 +47,7 @@ df["seasons"] = pd.to_numeric(      #convert to numeric
 )
     
 
-df.to_csv("data/netlfix_cleaned.csv", index=False)
+df.to_csv("data/netflix_cleaned.csv", index=False)
 
 print(df.shape)
 print(df.isnull().sum())
