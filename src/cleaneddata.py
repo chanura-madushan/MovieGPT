@@ -54,3 +54,14 @@ print(df.isnull().sum())
 
 
 print(df[["title", "type", "duration", "duration_minutes", "seasons"]])
+
+
+df["combine_features"] = (
+    df["title"]+" "
+    + df["director"] + " "
+    + df["cast"] + " "
+    + df["country"] + " "
+    + df["listed_in"] + " "
+    + df["description"]
+)
+print(df[["title", "combine_features"]].head(10))
