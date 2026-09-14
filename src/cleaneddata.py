@@ -1,4 +1,7 @@
+from sklearn.feature_extraction.text import TfidfVectorizer
 import pandas as pd
+
+
 
 df = pd.read_csv("data/netflix_titles.csv")
 
@@ -65,3 +68,13 @@ df["combine_features"] = (
     + df["description"]
 )
 print(df[["title", "combine_features"]].head(10))
+
+
+
+                                                         #VECTORIZITATION..........
+tfidf = TfidfVectorizer()
+tfidf_matrix = tfidf.fit_transform(df["combine_features"])
+print(tfidf_matrix.shape)
+
+
+
