@@ -26,7 +26,32 @@ for columns in text_columns:
 df["rating"]=df["rating"].fillna("unknown")
 df["duration"]=df["duration"].fillna("unknown")
 
+
+df["duration_minutes"] = df["duration"].str.extract(
+    r"(\d+)\s*min"
+)[0]
+
+df["duration_minutes"] = pd.to_numeric(     # Convert to numeric
+    df["duration_minutes"],
+    errors="coerce"
+)
+
+df["seasons"] = (       #Extract number of seasons for TV shows
+    df["duration"]
+    .str.replace(" Seasons", "", regex=False)
+    .str.replace(" Seasons", "", regex=False)
+)
+
+df["seasons"] = pd.to_numeric(      #convert to numeric
+    df["seasons"],
+    errors="coerce"
+)
+    
+
 df.to_csv("data/netlfix_cleaned.csv", index=False)
 
 print(df.shape)
 print(df.isnull().sum())
+
+
+print(df[["title", "type", "duration", "duration_minutes", "seasons"]])
