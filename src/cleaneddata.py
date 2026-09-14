@@ -1,5 +1,6 @@
-from sklearn.feature_extraction.text import TfidfVectorizer
 import pandas as pd
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 
 
@@ -71,10 +72,32 @@ print(df[["title", "combine_features"]].head(10))
 
 
 
-                                                         #VECTORIZITATION..........
+                                                         #VECTORIZITATION = Turns words to numbers
+                                                         
 tfidf = TfidfVectorizer()
 tfidf_matrix = tfidf.fit_transform(df["combine_features"])
 print(tfidf_matrix.shape)
 
 
+                                                         #COSINE SIMILARITY = Compares the numbers to find similarities
 
+similarity_matrix=cosine_similarity(tfidf_matrix)
+print(similarity_matrix.shape)
+
+
+
+
+def recommend(title):
+    index = df[df["title"] == title].index[0]
+    similarity_scores = list(enumerate(similarity_matrix[index]))
+
+    similarity_scores = sorted(
+        similarity_scores,
+        key=lambda x: x[1],
+        reverse=True
+    )
+
+    for i in similarity_scores[1:6]:
+        print(df.iloc[i[0]]["title"])
+
+recommend("Blood & Water")
