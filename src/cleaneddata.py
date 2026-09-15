@@ -88,16 +88,29 @@ print(similarity_matrix.shape)
 
 
 def recommend(title):
-    index = df[df["title"] == title].index[0]
-    similarity_scores = list(enumerate(similarity_matrix[index]))
+    matching_titles = df[df["title"].str.lower() == title.lower()]
 
+    if matching_titles.empty:
+        return ["Sorry, I could not find that title."]
+    index = matching_titles.index[0]
+
+
+    similarity_scores = list(enumerate(similarity_matrix[index]))
     similarity_scores = sorted(
         similarity_scores,
         key=lambda x: x[1],
         reverse=True
     )
 
-    for i in similarity_scores[1:6]:
-        print(df.iloc[i[0]]["title"])
+    recommendations = []        #creates an empty list
 
-recommend("Blood & Water")
+    for i in similarity_scores[1:6]:
+        recommendations.append(df.iloc[i[0]]["title"])
+
+    return recommendations
+
+
+
+##test the output
+#print(recommend("Avengers"))
+#print(recommend("blood & water"))
