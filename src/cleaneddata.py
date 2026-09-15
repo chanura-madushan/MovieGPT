@@ -87,6 +87,14 @@ print(similarity_matrix.shape)
 
 
 
+def find_title(user_input):                              #checcks if the users text contains any names of movies/tv series
+    for title in df["title"]:
+        if title.lower() in user_input.lower():
+            return title
+
+    return None
+
+
 def recommend(title):
     matching_titles = df[df["title"].str.lower() == title.lower()]
 
@@ -117,10 +125,15 @@ def recommend(title):
 
 
 #take user input:
-title = input("What movie or show do you like - ")
-recommendations = recommend(title)
-print("Movie-GPT : Here are some recommendations --\n")
+user_input = input("What movie or show do you like - ")
+title = find_title(user_input)
 
-for i, movie in enumerate(recommendations,1):
-    print(f"{i}. {movie}")
+if title:
+    recommendations = recommend(title)
 
+    print("Movie-GPT: Here are some recommendations --\n")
+    for i, movie in enumerate(recommendations, 1):
+        print(f"{i}. {movie}")
+        
+else:
+    print("Movie-GPT: Sorry, I could not find that title.")
