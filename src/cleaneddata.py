@@ -114,3 +114,13 @@ def recommend(title):
 ##test the output
 #print(recommend("Avengers"))
 #print(recommend("blood & water"))
+
+
+#take user input:
+title = input("What movie or show do you like - ")
+recommendations = recommend(title)
+print("Movie-GPT : Here are some recommendations --\n")
+
+for i, movie in enumerate(recommendations,1):
+    print(f"{i}. {movie}")
+
