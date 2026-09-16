@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
-
+from difflib import get_close_matches
 
 
 df = pd.read_csv("data/netflix_titles.csv")
@@ -85,12 +85,29 @@ similarity_matrix=cosine_similarity(tfidf_matrix)
 print(similarity_matrix.shape)
 
 
+def clean_text(text):                                    #understandss symbols in names of movies/tv series
+    return text.lower().replace("&", "and")
 
 
-def find_title(user_input):                              #checcks if the users text contains any names of movies/tv series
+
+def find_title(user_input):
+    user_input = clean_text(user_input)
+
     for title in df["title"]:
-        if title.lower() in user_input.lower():
+        if clean_text(title) in user_input:
             return title
+
+    return None
+
+    close_matches = get_close_matches(
+        user_input,
+        cleaned_titles.keys(),
+        n=1,
+        cutoff=0.8
+    )
+
+    if close_matches:
+        return cleaned_titles[close_matches[0]]
 
     return None
 
